@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import './SignUp.css';
+import auth from '../../firebase.init';
 
 const SignUp = () => {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth);
+
+    const navigate = useNavigate();
+    if(user){
+        navigate('/shop');
+    }
+
+
 
     const handleEmailBlur = (event) => {
         setEmail(event.target.value);
@@ -21,9 +30,10 @@ const SignUp = () => {
     const handleCreateUser = (event) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-            setError("Your password didn't match!")
+            setError("Your password didn't match!");
             return;
         }
+        createUserWithEmailAndPassword(email, password);
     }
 
     return (
@@ -44,11 +54,15 @@ const SignUp = () => {
                             <label htmlFor="password">Confirm Password</label>
                             <input onBlur={handleConfirmPasswordBlur} type="password" name="confirm password" id="" required />
                         </div>
+                        <p>{error?.message}</p>
+                        {
+                            loading && <p>Loading ...</p>
+                        }
                         <div>
-                            <input className='form-submit' type="submit" value="Signup" />
+                            <input className='form-submit' type="submit" value="Sign Up" />
                         </div>
                     </form>
-                    <div form-sign>
+                    <div className='form-sign'>
                         <p>
                             Already have an account? <Link className='form-link' to="/login">Login here</Link>
                         </p>
