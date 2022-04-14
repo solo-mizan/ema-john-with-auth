@@ -40,10 +40,15 @@
     background-color: rgba(255, 153, 0, 0.3);
     border: none;
     font-size: 20px;
+    cursor: pointer;
 
 }
 
-.form-link{
+.form-submit:hover {
+    background-color: rgba(255, 153, 0, 0.5);
+}
+
+.form-link {
     text-decoration: none;
     color: rgb(92, 17, 4);
 }
